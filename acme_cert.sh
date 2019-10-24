@@ -234,8 +234,8 @@ rm ${TEMP_DIR}/ExportPrivateKey.java ${TEMP_DIR}/ExportPrivateKey.class
 
 ###
 
-cat ${SERVICE_FILENAME}.pem ${SIGNING_CA_FILENAME}.pem ${INTER_CA_FILENAME}.pem ${ROOT_CA_FILENAME} > {$SERVICE_FILENAME}_full_chain.pem
-cat ${SERVICE_FILENAME}.pem ${SIGNING_CA_FILENAME}.pem ${INTER_CA_FILENAME}.pem ${ROOT_CA_FILENAME} ${SERVICE_KEYSTORE}.key > {$SERVICE_FILENAME}_full_chain_private_key.pem
+cat ${SERVICE_FILENAME}.pem ${SIGNING_CA_FILENAME}.pem ${INTER_CA_FILENAME}.pem ${ROOT_CA_FILENAME} > ${SERVICE_FILENAME}_full_chain.pem
+cat ${SERVICE_FILENAME}.pem ${SIGNING_CA_FILENAME}.pem ${INTER_CA_FILENAME}.pem ${ROOT_CA_FILENAME} ${SERVICE_KEYSTORE}.key > ${SERVICE_FILENAME}_full_chain_private_key.pem
 
 ###
 
