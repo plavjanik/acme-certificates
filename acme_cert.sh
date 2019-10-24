@@ -62,7 +62,7 @@ pkeytool -genkeypair -alias "${ROOT_CA_ALIAS}" -keyalg RSA -keysize 2048 -keysto
     -validity ${ROOT_CA_VALIDITY} -ext KeyUsage="keyCertSign" -ext BasicConstraints:"critical=ca:true"
 
 echo "Export root CA public certificate:"
-pkeytool -export $V -alias "${ROOT_CA_ALIAS}" -file ${ROOT_CA_FILENAME}.pem -keystore ${ROOT_CA_FILENAME}.keystore.p12 -rfc \
+pkeytool -export $V -alias "${ROOT_CA_ALIAS}" -file ${ROOT_CA_FILENAME}.cer -keystore ${ROOT_CA_FILENAME}.keystore.p12 -rfc \
     -keypass ${ROOT_CA_PASSWORD} -storepass ${ROOT_CA_PASSWORD} -storetype PKCS12
 
 ### Internal
@@ -77,18 +77,18 @@ pkeytool -certreq $V -alias "${INTER_CA_ALIAS}" -keystore ${INTER_CA_FILENAME}.k
     -keyalg RSA -storetype PKCS12 -dname "${INTER_CA_DNAME}" -validity ${INTER_CA_VALIDITY}
 
 echo "Sign the CSR using the Root Certificate Authority:"
-pkeytool -gencert $V -infile ${INTER_CA_FILENAME}.csr -outfile ${INTER_CA_FILENAME}_signed.pem -keystore ${ROOT_CA_FILENAME}.keystore.p12 \
+pkeytool -gencert $V -infile ${INTER_CA_FILENAME}.csr -outfile ${INTER_CA_FILENAME}_signed.cer -keystore ${ROOT_CA_FILENAME}.keystore.p12 \
     -alias "${ROOT_CA_ALIAS}" -keypass ${ROOT_CA_PASSWORD} -storepass ${ROOT_CA_PASSWORD} -storetype PKCS12 \
     -ext BasicConstraints:"critical=ca:true"  -ext KeyUsage="keyCertSign" -validity ${INTER_CA_VALIDITY} -rfc
 
 echo "Import the Root Certificate Authority to the keystore:"
-pkeytool -importcert $V -trustcacerts -noprompt -file ${ROOT_CA_FILENAME}.pem -alias "${ROOT_CA_ALIAS}" -keystore ${INTER_CA_FILENAME}.keystore.p12 -storepass ${INTER_CA_PASSWORD} -storetype PKCS12
+pkeytool -importcert $V -trustcacerts -noprompt -file ${ROOT_CA_FILENAME}.cer -alias "${ROOT_CA_ALIAS}" -keystore ${INTER_CA_FILENAME}.keystore.p12 -storepass ${INTER_CA_PASSWORD} -storetype PKCS12
 
 echo "Import the signed CSR to the keystore:"
-pkeytool -importcert $V -trustcacerts -noprompt -file ${INTER_CA_FILENAME}_signed.pem -alias "${INTER_CA_ALIAS}" -keystore ${INTER_CA_FILENAME}.keystore.p12 -storepass ${INTER_CA_PASSWORD} -storetype PKCS12
+pkeytool -importcert $V -trustcacerts -noprompt -file ${INTER_CA_FILENAME}_signed.cer -alias "${INTER_CA_ALIAS}" -keystore ${INTER_CA_FILENAME}.keystore.p12 -storepass ${INTER_CA_PASSWORD} -storetype PKCS12
 
 echo "Export internal CA public certificate:"
-pkeytool -export $V -alias "${INTER_CA_ALIAS}" -file ${INTER_CA_FILENAME}.pem -keystore ${INTER_CA_FILENAME}.keystore.p12 -rfc \
+pkeytool -export $V -alias "${INTER_CA_ALIAS}" -file ${INTER_CA_FILENAME}.cer -keystore ${INTER_CA_FILENAME}.keystore.p12 -rfc \
     -keypass ${INTER_CA_PASSWORD} -storepass ${INTER_CA_PASSWORD} -storetype PKCS12
 
 ### Signing CA
@@ -103,21 +103,21 @@ pkeytool -certreq $V -alias "${SIGNING_CA_ALIAS}" -keystore ${SIGNING_CA_FILENAM
     -keyalg RSA -storetype PKCS12 -dname "${SIGNING_CA_DNAME}" -validity ${SIGNING_CA_VALIDITY}
 
 echo "Sign the CSR using the Internal Certificate Authority:"
-pkeytool -gencert $V -infile ${SIGNING_CA_FILENAME}.csr -outfile ${SIGNING_CA_FILENAME}_signed.pem -keystore ${INTER_CA_FILENAME}.keystore.p12 \
+pkeytool -gencert $V -infile ${SIGNING_CA_FILENAME}.csr -outfile ${SIGNING_CA_FILENAME}_signed.cer -keystore ${INTER_CA_FILENAME}.keystore.p12 \
     -alias "${INTER_CA_ALIAS}" -keypass ${INTER_CA_PASSWORD} -storepass ${INTER_CA_PASSWORD} -storetype PKCS12 \
     -ext BasicConstraints:"critical=ca:true"  -ext KeyUsage="keyCertSign" -validity ${SIGNING_CA_VALIDITY} -rfc
 
 echo "Import the Root Certificate Authority to the keystore:"
-pkeytool -importcert $V -trustcacerts -noprompt -file ${ROOT_CA_FILENAME}.pem -alias "${ROOT_CA_ALIAS}" -keystore ${SIGNING_CA_FILENAME}.keystore.p12 -storepass ${SIGNING_CA_PASSWORD} -storetype PKCS12
+pkeytool -importcert $V -trustcacerts -noprompt -file ${ROOT_CA_FILENAME}.cer -alias "${ROOT_CA_ALIAS}" -keystore ${SIGNING_CA_FILENAME}.keystore.p12 -storepass ${SIGNING_CA_PASSWORD} -storetype PKCS12
 
 echo "Import the Internal Certificate Authority to the keystore:"
-pkeytool -importcert $V -trustcacerts -noprompt -file ${INTER_CA_FILENAME}.pem -alias "${INTER_CA_ALIAS}" -keystore ${SIGNING_CA_FILENAME}.keystore.p12 -storepass ${SIGNING_CA_PASSWORD} -storetype PKCS12
+pkeytool -importcert $V -trustcacerts -noprompt -file ${INTER_CA_FILENAME}.cer -alias "${INTER_CA_ALIAS}" -keystore ${SIGNING_CA_FILENAME}.keystore.p12 -storepass ${SIGNING_CA_PASSWORD} -storetype PKCS12
 
 echo "Import the signed CSR to the keystore:"
-pkeytool -importcert $V -trustcacerts -noprompt -file ${SIGNING_CA_FILENAME}_signed.pem -alias "${SIGNING_CA_ALIAS}" -keystore ${SIGNING_CA_FILENAME}.keystore.p12 -storepass ${SIGNING_CA_PASSWORD} -storetype PKCS12
+pkeytool -importcert $V -trustcacerts -noprompt -file ${SIGNING_CA_FILENAME}_signed.cer -alias "${SIGNING_CA_ALIAS}" -keystore ${SIGNING_CA_FILENAME}.keystore.p12 -storepass ${SIGNING_CA_PASSWORD} -storetype PKCS12
 
 echo "Export signing CA public certificate:"
-pkeytool -export $V -alias "${SIGNING_CA_ALIAS}" -file ${SIGNING_CA_FILENAME}.pem -keystore ${SIGNING_CA_FILENAME}.keystore.p12 -rfc \
+pkeytool -export $V -alias "${SIGNING_CA_ALIAS}" -file ${SIGNING_CA_FILENAME}.cer -keystore ${SIGNING_CA_FILENAME}.keystore.p12 -rfc \
     -keypass ${SIGNING_CA_PASSWORD} -storepass ${SIGNING_CA_PASSWORD} -storetype PKCS12
 
 ### Service
@@ -133,28 +133,28 @@ pkeytool -certreq $V -alias "${SERVICE_ALIAS}" -keystore ${SERVICE_KEYSTORE}.p12
     -keyalg RSA -storetype PKCS12 -dname "${SERVICE_DNAME}" -validity ${SERVICE_VALIDITY}
 
 # echo "Sign the CSR using the Internal Certificate Authority:"
-# pkeytool -gencert $V -infile ${SERVICE_FILENAME}.csr -outfile ${SERVICE_FILENAME}_signed.pem -keystore ${INTER_CA_FILENAME}.keystore.p12 \
+# pkeytool -gencert $V -infile ${SERVICE_FILENAME}.csr -outfile ${SERVICE_FILENAME}_signed.cer -keystore ${INTER_CA_FILENAME}.keystore.p12 \
 #     -alias ${INTER_CA_ALIAS} -keypass ${INTER_CA_PASSWORD} -storepass ${INTER_CA_PASSWORD} -storetype PKCS12 \
 #     -ext ${SERVICE_EXT} -ext KeyUsage:critical=keyEncipherment,digitalSignature,nonRepudiation,dataEncipherment -ext ExtendedKeyUsage=clientAuth,serverAuth -rfc \
 #     -validity ${SERVICE_VALIDITY}
 
 echo "Sign the CSR using the Signing Certificate Authority:"
-pkeytool -gencert $V -infile ${SERVICE_FILENAME}.csr -outfile ${SERVICE_FILENAME}_signed.pem -keystore ${SIGNING_CA_FILENAME}.keystore.p12 \
+pkeytool -gencert $V -infile ${SERVICE_FILENAME}.csr -outfile ${SERVICE_FILENAME}_signed.cer -keystore ${SIGNING_CA_FILENAME}.keystore.p12 \
     -alias "${SIGNING_CA_ALIAS}" -keypass ${SIGNING_CA_PASSWORD} -storepass ${SIGNING_CA_PASSWORD} -storetype PKCS12 \
     -ext ${SERVICE_EXT} -ext KeyUsage:critical=keyEncipherment,digitalSignature,nonRepudiation,dataEncipherment -ext ExtendedKeyUsage=clientAuth,serverAuth -rfc \
     -validity ${SERVICE_VALIDITY}
 
 echo "Import the Root Certificate Authority to the keystore:"
-pkeytool -importcert $V -trustcacerts -noprompt -file ${ROOT_CA_FILENAME}.pem -alias "${ROOT_CA_ALIAS}" -keystore ${SERVICE_KEYSTORE}.p12 -storepass ${SERVICE_PASSWORD} -storetype PKCS12
+pkeytool -importcert $V -trustcacerts -noprompt -file ${ROOT_CA_FILENAME}.cer -alias "${ROOT_CA_ALIAS}" -keystore ${SERVICE_KEYSTORE}.p12 -storepass ${SERVICE_PASSWORD} -storetype PKCS12
 
 echo "Import the Internal Certificate Authority to the keystore:"
-pkeytool -importcert $V -trustcacerts -noprompt -file ${INTER_CA_FILENAME}.pem -alias "${INTER_CA_ALIAS}" -keystore ${SERVICE_KEYSTORE}.p12 -storepass ${SERVICE_PASSWORD} -storetype PKCS12
+pkeytool -importcert $V -trustcacerts -noprompt -file ${INTER_CA_FILENAME}.cer -alias "${INTER_CA_ALIAS}" -keystore ${SERVICE_KEYSTORE}.p12 -storepass ${SERVICE_PASSWORD} -storetype PKCS12
 
 echo "Import the Signing Certificate Authority to the keystore:"
-pkeytool -importcert $V -trustcacerts -noprompt -file ${SIGNING_CA_FILENAME}.pem -alias "${SIGNING_CA_ALIAS}" -keystore ${SERVICE_KEYSTORE}.p12 -storepass ${SERVICE_PASSWORD} -storetype PKCS12
+pkeytool -importcert $V -trustcacerts -noprompt -file ${SIGNING_CA_FILENAME}.cer -alias "${SIGNING_CA_ALIAS}" -keystore ${SERVICE_KEYSTORE}.p12 -storepass ${SERVICE_PASSWORD} -storetype PKCS12
 
 echo "Import the signed CSR to the keystore:"
-pkeytool -importcert $V -trustcacerts -noprompt -file ${SERVICE_FILENAME}_signed.pem -alias "${SERVICE_ALIAS}" -keystore ${SERVICE_KEYSTORE}.p12 -storepass ${SERVICE_PASSWORD} -storetype PKCS12
+pkeytool -importcert $V -trustcacerts -noprompt -file ${SERVICE_FILENAME}_signed.cer -alias "${SERVICE_ALIAS}" -keystore ${SERVICE_KEYSTORE}.p12 -storepass ${SERVICE_PASSWORD} -storetype PKCS12
 
 ###
 
@@ -166,13 +166,13 @@ pkeytool -delete -alias "${SIGNING_CA_ALIAS}" -keystore ${SERVICE_KEYSTORE}_one_
 ###
 
 echo "Export service certificate to the PEM format:"
-pkeytool -exportcert -alias ${SERVICE_ALIAS} -keystore ${SERVICE_KEYSTORE}.p12 -storetype PKCS12 -storepass ${SERVICE_PASSWORD} -rfc -file ${SERVICE_KEYSTORE}.pem
+pkeytool -exportcert -alias ${SERVICE_ALIAS} -keystore ${SERVICE_KEYSTORE}.p12 -storetype PKCS12 -storepass ${SERVICE_PASSWORD} -rfc -file ${SERVICE_KEYSTORE}.cer
 
 ###
 
 echo "Export service certificate to the PKCS7 format:"
-openssl crl2pkcs7 -nocrl -certfile ${SERVICE_FILENAME}.pem -certfile ${SIGNING_CA_FILENAME}.pem -out ${SERVICE_FILENAME}_signing_ca.p7b
-openssl crl2pkcs7 -nocrl -certfile ${SERVICE_FILENAME}.pem -certfile ${SIGNING_CA_FILENAME}.pem -certfile ${INTER_CA_FILENAME}.pem -certfile ${ROOT_CA_FILENAME}.pem -out ${SERVICE_FILENAME}_full_chain.p7b
+openssl crl2pkcs7 -nocrl -certfile ${SERVICE_FILENAME}.cer -certfile ${SIGNING_CA_FILENAME}.cer -out ${SERVICE_FILENAME}_signing_ca.p7b
+openssl crl2pkcs7 -nocrl -certfile ${SERVICE_FILENAME}.cer -certfile ${SIGNING_CA_FILENAME}.cer -certfile ${INTER_CA_FILENAME}.cer -certfile ${ROOT_CA_FILENAME}.cer -out ${SERVICE_FILENAME}_full_chain.p7b
 
 ###
 
@@ -228,14 +228,14 @@ EOF
 echo "cat returned $?"
 javac ${TEMP_DIR}/ExportPrivateKey.java
 echo "javac returned $?"
-java -cp ${TEMP_DIR} ExportPrivateKey ${SERVICE_KEYSTORE}.p12 PKCS12 ${SERVICE_PASSWORD} ${SERVICE_ALIAS} ${SERVICE_PASSWORD} ${SERVICE_KEYSTORE}.key
+java -cp ${TEMP_DIR} ExportPrivateKey ${SERVICE_KEYSTORE}.p12 PKCS12 ${SERVICE_PASSWORD} ${SERVICE_ALIAS} ${SERVICE_PASSWORD} ${SERVICE_KEYSTORE}.pkcs8
 echo "java returned $?"
 rm ${TEMP_DIR}/ExportPrivateKey.java ${TEMP_DIR}/ExportPrivateKey.class
 
 ###
 
-cat ${SERVICE_FILENAME}.pem ${SIGNING_CA_FILENAME}.pem ${INTER_CA_FILENAME}.pem ${ROOT_CA_FILENAME} > ${SERVICE_FILENAME}_full_chain.pem
-cat ${SERVICE_FILENAME}.pem ${SIGNING_CA_FILENAME}.pem ${INTER_CA_FILENAME}.pem ${ROOT_CA_FILENAME} ${SERVICE_KEYSTORE}.key > ${SERVICE_FILENAME}_full_chain_private_key.pem
+cat ${SERVICE_FILENAME}.cer ${SIGNING_CA_FILENAME}.cer ${INTER_CA_FILENAME}.cer ${ROOT_CA_FILENAME} > ${SERVICE_FILENAME}_full_chain.cer
+cat ${SERVICE_FILENAME}.cer ${SIGNING_CA_FILENAME}.cer ${INTER_CA_FILENAME}.cer ${ROOT_CA_FILENAME} ${SERVICE_KEYSTORE}.pkcs8 > ${SERVICE_FILENAME}_full_chain_private_key.cer
 
 ###
 

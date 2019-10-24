@@ -1,4 +1,4 @@
-out/interca_signed.pem
+out/interca_signed.cer
 out/interca.csr
 out/signingca.csr
-out/signingca_signed.pem
+out/signingca_signed.cer
