@@ -27,6 +27,7 @@ The purpose is to provide data for testing of server certificate import with dif
         - [server.p12](#serverp12-1)
       - [Export whole certificate chain](#export-whole-certificate-chain)
         - [server_one_entry.p12](#serveroneentryp12-2)
+      - [Change password](#change-password)
 
 ## Certificate Files
 
@@ -94,7 +95,7 @@ zowe uss issue ssh "/usr/lpp/java/J8.0_64/bin/keytool -v -list -keystore server_
 keytool error (likely untranslated): java.io.IOException: Invalid keystore format
 ```
 
-You need to use `-storetype pkcs12` parameter or `.p12` extension for PKCS-12 keystores.
+You need to use `-storetype pkcs12` parameter for PKCS-12 keystores.
 
 #### Short list
 
@@ -773,3 +774,18 @@ cert-01  cert-02  cert-03  cert-04
 ```
 
 Each file `cert-*` contains a certificate. The last one `cert-04` is the root CA.
+
+#### Change password
+
+To change password of the keystore:
+
+```sh
+keytool -storepasswd -keystore server.p12 -storetype pkcs12
+```
+
+```txt
+Enter keystore password: <old password>
+New keystore password: <new password>
+Re-enter new keystore password: <new password>
+Password change successful for alias <server>
+```
