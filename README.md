@@ -761,7 +761,7 @@ LBKK0VaiWrSpjviHj7voGlvZrlj0MQ2hjtmrAYZKGAzfr79SN/ZY
 ```
 
 ```sh
-zowe uss issue ssh "csplit -f cert- chain.cer '/-----BEGIN CERTIFICATE-----/' '{3}'; rm cert-00; ls cert-*"
+zowe uss issue ssh "csplit -f cert- chain.cer '/-----BEGIN CERTIFICATE-----/' '{3}'; rm cert-00; ls -lET cert-*"
 ```
 
 ```txt
@@ -770,7 +770,10 @@ zowe uss issue ssh "csplit -f cert- chain.cer '/-----BEGIN CERTIFICATE-----/' '{
 1432
 1428
 1358
-cert-01  cert-02  cert-03  cert-04
+t IBM-1047    T=on  -rw-r--r--  --s-  1 SDKBLD1  SYS1        1530 Oct 28 15:59 cert-01
+t IBM-1047    T=on  -rw-r--r--  --s-  1 SDKBLD1  SYS1        1432 Oct 28 15:59 cert-02
+t IBM-1047    T=on  -rw-r--r--  --s-  1 SDKBLD1  SYS1        1428 Oct 28 15:59 cert-03
+t IBM-1047    T=on  -rw-r--r--  --s-  1 SDKBLD1  SYS1        1358 Oct 28 15:59 cert-04
 ```
 
 Each file `cert-*` contains a certificate. The last one `cert-04` is the root CA.
