@@ -324,28 +324,6 @@ PathLen:2147483647
 Keystore type: pkcs12
 Keystore provider: IBMJCE
 
-Your keystore contains 1 entry
-
-server, Oct 24, 2019, keyEntry,
-Certificate fingerprint (SHA1): 06:40:A2:DE:6F:AE:19:ED:86:4E:07:1B:28:B2:E5:0A:35:F9:6F:C1
- ~/w/g/acme-certificates   *  out  zowe files upload ftu "server.p12" "/zaas1/sdkbld1/server.p12" --binary                                                                                                                        1.4m  Mon Oct 28 15:33:14 2019
-success: true
-from:    server.p12
-to:      /zaas1/sdkbld1/server.p12
-
-
-USS file uploaded successfully.
- ~/w/g/acme-certificates   *  out  ```sh                                                                                                                                                                                        2057ms  Mon Oct 28 15:33:36 2019
-                                       zowe uss issue ssh "/usr/lpp/java/J8.0_64/bin/keytool -v -list -storetype pkcs12 -keystore server_one_entry.p12 -storepass password"
-                                       ```^C
- ~/w/g/acme-certificates   *  out  zowe uss issue ssh "/usr/lpp/java/J8.0_64/bin/keytool -v -list -storetype pkcs12 -keystore server -storepass password"                                                                       2057ms  Mon Oct 28 15:33:41 2019
-^C⏎
- !  ~/w/g/acme-certificates   *  out  zowe uss issue ssh "/usr/lpp/java/J8.0_64/bin/keytool -v -list -storetype pkcs12 -keystore server.p12 -storepass password"                                                               1563ms  Mon Oct 28 15:33:48 2019
-
-$
-Keystore type: pkcs12
-Keystore provider: IBMJCE
-
 Your keystore contains 4 entries
 
 Alias name: server
