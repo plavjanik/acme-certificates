@@ -100,7 +100,7 @@ You need to use `-storetype pkcs12` parameter for PKCS-12 keystores.
 #### Short list
 
 ```sh
-zowe uss issue ssh "/usr/lpp/java/J8.0_64/bin/keytool -v -list -storetype pkcs12 -keystore server_one_entry.p12 -storepass password"
+zowe uss issue ssh "/usr/lpp/java/J8.0_64/bin/keytool -list -storetype pkcs12 -keystore server_one_entry.p12 -storepass password"
 ```
 
 ##### server_one_entry.p12
